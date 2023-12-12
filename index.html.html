@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mood Tracker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #585858;
+    cursor: pointer;
+  }
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border: none;
+    border-radius: 50%;
+    background: #585858;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body class="bg-gray-100">
+
+<form
+method="POST"
+action="https://script.google.com/macros/s/AKfycbxRu7X96FSSrvviQngTXgON55VOjMmnmsexzITl8SgW-CenfwmHR_IKwmHe3ol3mrreKQ/exec"
+>
+
+<div id="app" class="min-h-screen flex flex-col justify-center items-center p-4">
+  <div id="questionScreen" class="w-full max-w-lg">
+    <label for="moodSlider" class="block text-center text-lg mb-4">Hi Iban!</label>
+    <label for="moodSlider" class="block text-center text-2xl mb-4">How was your day?</label>
+    <div id="sliderValue" class="text-center text-4xl mb-4">0</div>
+    <input name="Score" type="range" min="-4" max="4" value="0" class="slider w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="moodSlider">
+    <div class="text-center mt-4">
+      <button id="confirmButton" class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" type="button">Confirm</button>
+    </div>
+  </div>
+
+  <div id="noteScreen" class="w-full max-w-lg hidden">
+    <textarea name="Note" id="noteField" class="form-textarea mt-1 block w-full" rows="3" placeholder="Anything to remember?" style="padding: 16px;"></textarea>
+    <div class="text-center mt-4">
+      <button id="sendButton" class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" type="submit">Track your day</button>
+    </div>
+  </div>
+
+  <div id="thankYouScreen" class="w-full max-w-lg hidden text-center">
+    <p class="text-2xl">Thank you for keeping it up!</p>
+    <p class="mt-2">Sincerely, your future you</p>
+    <div class="text-center mt-4">
+      <button id="trackAnotherDayButton" class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Track another day</button>
+    </div>
+  </div>
+</div>
+</form>
+
+<script>
+  const moodSlider = document.getElementById('moodSlider');
+  const confirmButton = document.getElementById('confirmButton');
+
+  const noteScreen = document.getElementById('noteScreen');
+  const questionScreen = document.getElementById('questionScreen');
+  const thankYouScreen = document.getElementById('thankYouScreen');
+  const sendButton = document.getElementById('sendButton');
+  const trackAnotherDayButton = document.getElementById('trackAnotherDayButton');
+  const app = document.getElementById('app');
+  const sliderValue = document.getElementById('sliderValue');
+
+  const moodColors = {
+    '-4': 'bg-red-500',
+    '-3': 'bg-red-400',
+    '-2': 'bg-red-300',
+    '-1': 'bg-red-200',
+    '0': 'bg-gray-100',
+    '1': 'bg-green-200',
+    '2': 'bg-green-300',
+    '3': 'bg-green-400',
+    '4': 'bg-green-500'
+  };
+
+
+moodSlider.addEventListener('input', function() {
+    const moodValue = moodSlider.value;
+    app.className = `min-h-screen flex flex-col justify-center items-center p-4 ${moodColors[moodValue]}`;
+    sliderValue.textContent = `${moodValue}`;
+});
+
+  confirmButton.addEventListener('click', function() {
+    questionScreen.classList.add('hidden');
+    noteScreen.classList.remove('hidden');
+    noteScreen.style.backgroundColor = app.style.backgroundColor;
+  });
+
+  sendButton.addEventListener('click', function() {
+    noteScreen.classList.add('hidden');
+    thankYouScreen.classList.remove('hidden');
+    
+    const moodValue = moodSlider.value;
+    const note = document.getElementById('noteField').value;
+  });
+
+  trackAnotherDayButton.addEventListener('click', function() {
+    thankYouScreen.classList.add('hidden');
+    questionScreen.classList.remove('hidden');
+    moodSlider.value = 0;
+    sliderValue.textContent = '0';
+    app.className = 'min-h-screen flex flex-col justify-center items-center p-4 bg-gray-100';
+  });
+
+  
+
+</script>
+</body>
+</html>
