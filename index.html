@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mood Tracker</title>
+<title>Day Tracker</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/forms"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -33,6 +33,7 @@
 <body class="bg-gray-100">
 
 <form
+id="daytrackerform"
 method="POST"
 action="https://script.google.com/macros/s/AKfycbxRu7X96FSSrvviQngTXgON55VOjMmnmsexzITl8SgW-CenfwmHR_IKwmHe3ol3mrreKQ/exec"
 >
@@ -59,7 +60,7 @@ action="https://script.google.com/macros/s/AKfycbxRu7X96FSSrvviQngTXgON55VOjMmnm
     <p class="text-2xl">Thank you for keeping it up!</p>
     <p class="mt-2">Sincerely, your future you</p>
     <div class="text-center mt-4">
-      <button id="trackAnotherDayButton" class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Track another day</button>
+      <button type="button" id="trackAnotherDayButton" class="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Track another day</button>
     </div>
   </div>
 </div>
@@ -117,6 +118,19 @@ moodSlider.addEventListener('input', function() {
     sliderValue.textContent = '0';
     app.className = 'min-h-screen flex flex-col justify-center items-center p-4 bg-gray-100';
   });
+
+  window.addEventListener("load", function() {
+  const form = document.getElementById('daytrackerform');
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+    const action = e.target.action;
+    fetch(action, {
+      method: 'POST',
+      body: data,
+    })
+  });
+});
 
   
 
